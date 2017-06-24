@@ -27,6 +27,9 @@ typedef struct	s_fdf
 	int			min;
 	void		*mlx;
 	void		*win;
+	int			c;
+	int			i;
+	int			r;
 }				t_fdf;
 
 typedef struct	s_pts
@@ -35,10 +38,12 @@ typedef struct	s_pts
 	int			y1;
 	int			x2;
 	int			y2;
-	int			yflat;
+	int			color;
+	int			rshift;
 }				t_pts;
 
+void			fils_de_fer(t_fdf *map);
 int				fdf_width_len(char *str);
 int				fdf_put_error(t_fdf *map);
-void			fdf_color(int r, int g, int b);
+t_pts			*fdf_expose_color(int z1, int z2, t_fdf*map, t_pts *ord);
 #endif
