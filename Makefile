@@ -13,11 +13,11 @@ SFILE	= fdf.c \
 SRC		= $(addprefix $(SDIR), $(SFILE))
 SDIR	= ./
 
-LFILE	= ./libft/libft.a
+LFILE	= ./libft/libft.a \
+			./mlx/libmlx.a
 LIB		= -L./libft -lft \
 			-L./mlx -lmlx
 LDIR	= ./libft
-
 
 OFILE	= $(SRC:.c=.o)
 OBJ		= $(addprefix $(ODIR), $(OFILE))
@@ -35,6 +35,7 @@ lib: $(LIB)
 
 $(LIB):
 	@$(MC) $(LDIR)
+	@$(MC) ./mlx
 
 $(ODIR)%.o: %.c
 	@$(CC) -c $(FLAG) $(INCL) -c $< -o $@
@@ -47,6 +48,7 @@ $(NAME): ofile $(OBJ)
 
 clean:
 	@$(MC) $(LDIR) clean
+	@$(RM) ./mlx/*.o
 	@$(RM) $(ODIR)
 
 fclean: clean
