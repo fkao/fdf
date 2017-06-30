@@ -6,13 +6,39 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 17:06:32 by fkao              #+#    #+#             */
-/*   Updated: 2017/06/27 17:54:12 by fkao             ###   ########.fr       */
+/*   Updated: 2017/06/29 17:25:54 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <unistd.h>
 #include <fcntl.h>
+
+int		fdf_key_bonus(int keycode, t_fdf *map)
+{
+	float theta;
+
+	if (keycode == 15 || keycode == 5 || keycode == 11)
+		fdf_key_tint(keycode, map);
+	else
+	{
+		theta = atan(map->scale / map->size);
+		if (keycode == 126)
+			map->tilt -= 0.01746;
+		if (keycode == 125)
+			map->tilt += 0.01746;
+		if (keycode == 24 || keycode == 27)
+		{
+			(keycode == 24) ? map->size++ : map->size--;
+			map->scale = tan(theta) * map->size;
+			mlx_destroy_window(map->mlx, map->win);
+			fdf_open_window(map);
+		}
+		mlx_clear_window(map->mlx, map->win);
+		fils_de_fer(map);
+	}
+	return (0);
+}
 
 t_fdf	*fdf_height_width(t_fdf *map, char *file)
 {
@@ -91,12 +117,15 @@ void	fdf_open_window(t_fdf *map)
 	int		zeta;
 
 	map->mlx = mlx_init();
-	map->size = 20;
-	screen = map->high-- + map->wide--;
-	while (screen > 130)
+	if (!map->size)
 	{
-		map->size /= 2;
-		screen /= 2;
+		map->size = 20;
+		screen = map->high-- + map->wide--;
+		while (screen > 130)
+		{
+			map->size /= 2;
+			screen /= 2;
+		}
 	}
 	winx = (map->wide + map->high) * map->size * cos(0.524) + map->size * 2;
 	winy = (map->wide + map->high) * map->size * sin(0.524) + map->size * 2;

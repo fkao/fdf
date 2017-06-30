@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 14:41:38 by fkao              #+#    #+#             */
-/*   Updated: 2017/06/28 12:46:57 by fkao             ###   ########.fr       */
+/*   Updated: 2017/06/29 17:23:50 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ typedef struct	s_fdf
 	int			min;
 	void		*mlx;
 	void		*win;
-	int			c;
+	char		*rgbmax;
+	char		*rgbmin;
 	int			r;
+	int			g;
+	int			b;
 	float		tilt;
-	float		zoom;
-	float		shift;
 }				t_fdf;
 
 typedef struct	s_plot
@@ -43,6 +44,7 @@ typedef struct	s_plot
 	int			x2;
 	int			y2;
 	int			of;
+	int			down;
 	int			color;
 }				t_plot;
 
@@ -52,10 +54,10 @@ typedef struct	s_trig
 	int			j;
 	int			z1;
 	int			z2;
-	int			offset;
+	int			of;
 	int			xo;
 	int			yo;
-	int			down;
+	int			xflat;
 }				t_trig;
 
 typedef struct	s_calc
@@ -71,13 +73,33 @@ typedef struct	s_calc
 	int			dif;
 }				t_calc;
 
+typedef struct	s_rgb
+{
+	int			r;
+	int			g;
+	int			b;
+	int			rz;
+	int			gz;
+	int			bz;
+	int			r1;
+	int			g1;
+	int			b1;
+	int			rgb;
+	int			d;
+	int			d1;
+}				t_rgb;
+
 void			fils_de_fer(t_fdf *map);
 t_fdf			*fdf_height_width(t_fdf *map, char *file);
 t_fdf			*fdf_grab_key(t_fdf *map, char *file);
 void			fdf_open_window(t_fdf *map);
-void			fdf_draw_line(void *mlx, void *win, t_plot *wire);
+void			fdf_draw_line(t_fdf *map, t_plot *pix, t_trig *t);
 int				fdf_width_len(char *str);
 int				fdf_put_error(t_fdf *map);
+int				fdf_check_rgb(char *str);
 int				fdf_key_funct(int keycode, t_fdf *map);
-t_plot			*fdf_expose_color(int z1, int z2, t_fdf *map, t_plot *wire);
+int				fdf_key_bonus(int keycode, t_fdf *map);
+int				fdf_key_tint(int keycode, t_fdf *map);
+int				fdf_expose_color(t_fdf *map, t_plot *pix, t_trig *t,
+					t_calc *store);
 #endif

@@ -6,84 +6,55 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 12:05:12 by fkao              #+#    #+#             */
-/*   Updated: 2017/06/27 15:14:06 by fkao             ###   ########.fr       */
+/*   Updated: 2017/06/29 17:27:58 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		fdf_rgb_contrast(int z)
+int	fdf_key_tint(int keycode, t_fdf *map)
 {
-	int		rgbhex;
-
-	if (z <= 0)
-		rgbhex = 0x00FFFFFF;
-	if (z == -1)
-		rgbhex = 0x00E0F2FF;
-	if (z == -2)
-		rgbhex = 0x00C9E8FF;
-	if (z == -3)
-		rgbhex = 0x00AFDEFF;
-	if (z == -4)
-		rgbhex = 0x0096D3FF;
-	if (z == -5)
-		rgbhex = 0x007CC8FF;
-	if (z == -6)
-		rgbhex = 0x0063B5FF;
-	if (z == -7)
-		rgbhex = 0x004CB4FF;
-	if (z == -8)
-		rgbhex = 0x0032A9FF;
-	if (z == -9)
-		rgbhex = 0x00199FFF;
-	if (z <= -10)
-		rgbhex = 0x000096FF;
-	return (rgbhex);
+	if (keycode == 15)
+		map->r += 10;
+	if (keycode == 5)
+		map->g += 10;
+	if (keycode == 11)
+		map->b += 10;
+	mlx_clear_window(map->mlx, map->win);
+	fils_de_fer(map);
+	return (0);
 }
 
-int		fdf_rgb_hex(int z)
+int	fdf_rgb_get(t_fdf *map, int z)
 {
-	int		rgbhex;
+	t_rgb	*c;
 
-	if (z <= 0)
-		return (fdf_rgb_contrast(z));
-	if (z == 1)
-		rgbhex = 0x00F2E0FF;
-	if (z == 2)
-		rgbhex = 0x00E8C9FF;
-	if (z == 3)
-		rgbhex = 0x00DEAFFF;
-	if (z == 4)
-		rgbhex = 0x00D396FF;
-	if (z == 5)
-		rgbhex = 0x00C87CFF;
-	if (z == 6)
-		rgbhex = 0x00B563FF;
-	if (z == 7)
-		rgbhex = 0x00B44CFF;
-	if (z == 8)
-		rgbhex = 0x00A932FF;
-	if (z == 9)
-		rgbhex = 0x009F19FF;
-	if (z >= 10)
-		rgbhex = 0x009600FF;
-	return (rgbhex);
+	c = (t_rgb*)ft_memalloc(sizeof(*c));
+	c->r = ft_atoi(ft_strsub(map->rgbmin, 0, 3));
+	c->g = ft_atoi(ft_strsub(map->rgbmin, 3, 3));
+	c->b = ft_atoi(ft_strsub(map->rgbmin, 6, 3));
+	c->rz = (ft_atoi(ft_strsub(map->rgbmax, 0, 3)) + map->r) % 256;
+	c->gz = (ft_atoi(ft_strsub(map->rgbmax, 3, 3)) + map->g) % 256;
+	c->bz = (ft_atoi(ft_strsub(map->rgbmax, 6, 3)) + map->b) % 256;
+	c->d = map->max - map->min;
+	c->r1 = (c->r - c->rz) / c->d;
+	c->g1 = (c->g - c->gz) / c->d;
+	c->b1 = (c->b - c->bz) / c->d;
+	c->d1 = map->max - z;
+	c->rgb = ((c->rz + c->r1 * c->d1) << 16) + ((c->gz + c->g1 * c->d1) << 8) +
+		(c->bz + c->b1 * c->d1);
+	return (c->rgb);
 }
 
-t_plot	*fdf_expose_color(int z1, int z2, t_fdf *map, t_plot *wire)
+int	fdf_expose_color(t_fdf *map, t_plot *pix, t_trig *t, t_calc *store)
 {
-	int	rshift;
+	int	yo;
+	int	z;
 
-	if (z2 < z1)
-	{
-		rshift = map->r * ((ft_toabsl(z1) < 10) ? ft_toabsl(z1) : 10);
-		wire->color = fdf_rgb_hex(z1);
-	}
+	if (pix->down)
+		yo = t->yo + (store->x - t->xo) * (sin(0.524 + map->tilt) / cos(0.524));
 	else
-	{
-		rshift = map->r * ((ft_toabsl(z2) < 10) ? ft_toabsl(z2) : 10);
-		wire->color = fdf_rgb_hex(z2);
-	}
-	wire->color -= rshift;
-	return (wire);
+		yo = t->yo - (store->x - t->xo) * (sin(0.524 + map->tilt) / cos(0.524));
+	z = (yo - store->y) / map->scale;
+	return (fdf_rgb_get(map, z));
 }
