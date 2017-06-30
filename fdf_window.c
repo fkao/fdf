@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 17:06:32 by fkao              #+#    #+#             */
-/*   Updated: 2017/06/29 18:43:12 by fkao             ###   ########.fr       */
+/*   Updated: 2017/06/29 19:10:42 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ t_fdf	*fdf_grab_key(t_fdf *map, char *file)
 	int		*row;
 	char	*line;
 
+	map->file = file;
 	map->fd = open(file, O_RDONLY);
 	map->key = (int**)malloc(sizeof(int*) * map->high);
 	i = 0;
@@ -121,7 +122,7 @@ void	fdf_open_window(t_fdf *map)
 	winx = (map->wide + map->high) * map->size * cos(0.524) + map->size * 2;
 	winy = (map->wide + map->high) * map->size * sin(0.524) + map->size * 2;
 	winz = map->scale * (map->max - map->min);
-	map->win = mlx_new_window(map->mlx, winx, winy + winz, "mlx 42");
+	map->win = mlx_new_window(map->mlx, winx, winy + winz, map->file);
 	if (!map->wide && !map->high)
 		mlx_pixel_put(map->mlx, map->win, map->size, map->size, 0x00FFFFFF);
 	else
