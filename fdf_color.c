@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 12:05:12 by fkao              #+#    #+#             */
-/*   Updated: 2017/06/29 17:27:58 by fkao             ###   ########.fr       */
+/*   Updated: 2017/06/29 18:39:21 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	fdf_rgb_get(t_fdf *map, int z)
 	t_rgb	*c;
 
 	c = (t_rgb*)ft_memalloc(sizeof(*c));
-	c->r = ft_atoi(ft_strsub(map->rgbmin, 0, 3));
-	c->g = ft_atoi(ft_strsub(map->rgbmin, 3, 3));
-	c->b = ft_atoi(ft_strsub(map->rgbmin, 6, 3));
+	c->r = (ft_atoi(ft_strsub(map->rgbmin, 0, 3)) + map->r) % 256;
+	c->g = (ft_atoi(ft_strsub(map->rgbmin, 3, 3)) + map->g) % 256;
+	c->b = (ft_atoi(ft_strsub(map->rgbmin, 6, 3)) + map->b) % 256;
 	c->rz = (ft_atoi(ft_strsub(map->rgbmax, 0, 3)) + map->r) % 256;
 	c->gz = (ft_atoi(ft_strsub(map->rgbmax, 3, 3)) + map->g) % 256;
 	c->bz = (ft_atoi(ft_strsub(map->rgbmax, 6, 3)) + map->b) % 256;

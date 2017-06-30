@@ -6,11 +6,26 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/19 17:11:23 by fkao              #+#    #+#             */
-/*   Updated: 2017/06/29 17:42:27 by fkao             ###   ########.fr       */
+/*   Updated: 2017/06/29 18:35:59 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+int	fdf_size_init(int high, int wide)
+{
+	int	screen;
+	int	size;
+
+	size = 20;
+	screen = high + wide;
+	while (screen > 130)
+	{
+		size /= 2;
+		screen /= 2;
+	}
+	return (size);
+}
 
 int	fdf_width_len(char *str)
 {

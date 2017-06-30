@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 14:41:38 by fkao              #+#    #+#             */
-/*   Updated: 2017/06/29 17:23:50 by fkao             ###   ########.fr       */
+/*   Updated: 2017/06/29 18:37:20 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ t_fdf			*fdf_height_width(t_fdf *map, char *file);
 t_fdf			*fdf_grab_key(t_fdf *map, char *file);
 void			fdf_open_window(t_fdf *map);
 void			fdf_draw_line(t_fdf *map, t_plot *pix, t_trig *t);
+int				fdf_size_init(int high, int wide);
 int				fdf_width_len(char *str);
 int				fdf_put_error(t_fdf *map);
 int				fdf_check_rgb(char *str);
