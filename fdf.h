@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 14:41:38 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/03 15:30:24 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/03 16:21:52 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,6 @@ t_fdf			*fdf_height_width(t_fdf *e, char *file);
 t_fdf			*fdf_grab_key(t_fdf *e, char *file);
 void			fdf_open_window(t_fdf *e);
 void			fdf_draw_line(t_fdf *e, t_plot *pix, t_trig *t);
-int				fdf_width_len(char *str);
-int				fdf_put_error(t_fdf *e);
 int				fdf_check_rgb(char *str);
 int				fdf_key_funct(int keycode, t_fdf *e);
 int				fdf_mouse_funct(int keycode, int x, int y, t_fdf *e);

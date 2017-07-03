@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 15:35:40 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/03 16:07:39 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/03 16:30:50 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ int		fdf_put_error(t_fdf *e)
 {
 	if (e == 0)
 	{
-		ft_putstr("usage: ./fdf [file][maxrgb(rrrgggbbb)] [minrgb(rrrgggbbb)]");
-		ft_putendl(" [zscale]");
+		ft_putstr("usage: ./fdf [file] [maxrgb(rrrgggbbb)] ");
+		ft_putendl("[minrgb(rrrgggbbb)] [zscale]");
 	}
 	else if (e->fd == -1)
-		ft_putendl("error: file cannot be found");
-	else if (e->wide == 0)
-		ft_putendl("e error: empty e");
+		ft_putendl("file error: file cannot be found");
 	else if (e->wide == -1)
-		ft_putendl("e error: invalid e");
+		ft_putendl("map error: invalid map");
+	else if (e->wide == 0)
+		ft_putendl("map error: empty map");
 	else
 		return (0);
 	return (1);
@@ -108,8 +108,8 @@ int		main(int ac, char **av)
 
 	e = (t_fdf*)ft_memalloc(sizeof(*e));
 	e->scale = 3;
-	e->rgbmax = "255255255";
-	e->rgbmin = "255255255";
+	e->rgbmax = "200200000";
+	e->rgbmin = "200000255";
 	if (ac == 5 && (ft_isdigit(av[4][0]) && ft_atoi(av[4]) > 0 &&
 		ft_atoi(av[4]) < 20))
 		e->scale = ft_atoi(av[--ac]);
