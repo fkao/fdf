@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 17:06:32 by fkao              #+#    #+#             */
-/*   Updated: 2017/06/29 19:10:42 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/03 16:08:18 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,73 +14,66 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-int		fdf_key_bonus(int keycode, t_fdf *map)
+int		fdf_width_len(char *str)
 {
-	float theta;
+	int	i;
 
-	if (keycode == 15 || keycode == 5 || keycode == 11)
-		fdf_key_tint(keycode, map);
-	else
+	i = 0;
+	while (*str)
 	{
-		theta = atan(map->scale / map->size);
-		if (keycode == 126)
-			map->tilt -= 0.01746;
-		if (keycode == 125)
-			map->tilt += 0.01746;
-		if (keycode == 24 || keycode == 27)
+		if (ft_isdigit(*str))
 		{
-			(keycode == 24) ? map->size++ : map->size--;
-			map->scale = tan(theta) * map->size;
-			mlx_destroy_window(map->mlx, map->win);
-			fdf_open_window(map);
+			i++;
+			while (*str != ' ' && *str)
+				str++;
 		}
-		mlx_clear_window(map->mlx, map->win);
-		fils_de_fer(map);
+		else
+			str++;
 	}
-	return (0);
+	return (i);
 }
 
-t_fdf	*fdf_height_width(t_fdf *map, char *file)
+t_fdf	*fdf_height_width(t_fdf *e, char *file)
 {
 	int		ret;
 	char	*line;
 
-	map->fd = open(file, O_RDONLY);
-	if (map->fd != -1)
+	e->fd = open(file, O_RDONLY);
+	if (e->fd != -1)
 	{
-		ret = get_next_line(map->fd, &line);
-		map->wide = fdf_width_len(line);
+		ret = get_next_line(e->fd, &line);
+		e->wide = fdf_width_len(line);
 		while (ret == 1)
 		{
-			ret = get_next_line(map->fd, &line);
-			if (fdf_width_len(line) != map->wide)
+			ret = get_next_line(e->fd, &line);
+			if (fdf_width_len(line) != e->wide)
 			{
-				map->wide = -1;
+				e->wide = -1;
 				break ;
 			}
-			map->high++;
+			e->high++;
 		}
 	}
-	close(map->fd);
-	return (map);
+	close(e->fd);
+	return (e);
 }
 
-int		*fdf_min_max(t_fdf *map, char *line)
+int		*fdf_min_max(t_fdf *e, char *line)
 {
 	int	*row;
 	int	i;
 
-	row = (int*)malloc(sizeof(int) * map->wide);
+	row = (int*)malloc(sizeof(int) * e->wide);
 	i = 0;
 	while (*line)
 	{
 		if (ft_isdigit(*line) || *line == '-')
 		{
 			row[i] = ft_atoi(line);
-			if (row[i] > map->max)
-				map->max = row[i];
-			if (row[i] < map->min)
-				map->min = row[i];
+			if (row[i] > e->max)
+				e->max = row[i];
+			if (row[i] < e->min)
+				e->min = row[i];
 			while (*line != ' ' && *line)
 				line++;
 			i++;
@@ -91,43 +84,50 @@ int		*fdf_min_max(t_fdf *map, char *line)
 	return (row);
 }
 
-t_fdf	*fdf_grab_key(t_fdf *map, char *file)
+t_fdf	*fdf_grab_key(t_fdf *e, char *file)
 {
 	int		i;
 	int		*row;
 	char	*line;
 
-	map->file = file;
-	map->fd = open(file, O_RDONLY);
-	map->key = (int**)malloc(sizeof(int*) * map->high);
+	e->file = file;
+	e->fd = open(file, O_RDONLY);
+	e->key = (int**)malloc(sizeof(int*) * e->high);
 	i = 0;
-	while (get_next_line(map->fd, &line) == 1)
+	while (get_next_line(e->fd, &line) == 1)
 	{
-		row = fdf_min_max(map, line);
-		map->key[i++] = row;
+		row = fdf_min_max(e, line);
+		e->key[i++] = row;
 	}
-	close(map->fd);
-	return (map);
+	close(e->fd);
+	return (e);
 }
 
-void	fdf_open_window(t_fdf *map)
+void	fdf_open_window(t_fdf *e)
 {
 	int		winx;
 	int		winy;
 	int		winz;
+	int		screen;
 
-	map->mlx = mlx_init();
-	if (!map->size)
-		map->size = fdf_size_init(map->high--, map->wide--);
-	winx = (map->wide + map->high) * map->size * cos(0.524) + map->size * 2;
-	winy = (map->wide + map->high) * map->size * sin(0.524) + map->size * 2;
-	winz = map->scale * (map->max - map->min);
-	map->win = mlx_new_window(map->mlx, winx, winy + winz, map->file);
-	if (!map->wide && !map->high)
-		mlx_pixel_put(map->mlx, map->win, map->size, map->size, 0x00FFFFFF);
+	e->mlx = mlx_init();
+	e->size = 20;
+	screen = e->high-- + e->wide--;
+	while (screen > 130)
+	{
+		e->size /= 2;
+		screen /= 2;
+	}
+	winx = (e->wide + e->high) * e->size * cos(0.524) + e->size * 2;
+	winy = (e->wide + e->high) * e->size * sin(0.524) + e->size * 2;
+	winz = e->scale * (e->max - e->min);
+	e->win = mlx_new_window(e->mlx, winx, winy + winz, e->file);
+	if (!e->wide && !e->high)
+		mlx_pixel_put(e->mlx, e->win, e->size, e->size, 0x00FFFFFF);
 	else
-		fils_de_fer(map);
-	mlx_key_hook(map->win, fdf_key_funct, map);
-	mlx_loop(map->mlx);
+		fils_de_fer(e);
+	mlx_key_hook(e->win, fdf_key_funct, e);
+	mlx_mouse_hook(e->win, fdf_mouse_funct, e);
+	mlx_loop(e->mlx);
 	return ;
 }

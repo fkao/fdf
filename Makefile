@@ -7,7 +7,7 @@ INCL	= -I./libft/includes \
 SFILE	= fdf.c \
 			fdf_window.c \
 			fdf_draw.c \
-			fdf_tools.c \
+			fdf_hook.c \
 			fdf_color.c
 
 SRC		= $(addprefix $(SDIR), $(SFILE))

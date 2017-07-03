@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 14:22:37 by fkao              #+#    #+#             */
-/*   Updated: 2017/06/29 17:07:50 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/03 14:53:51 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_calc	*fdf_populate_store(t_plot *pix, t_calc *store)
 	return (store);
 }
 
-void	fdf_draw_line(t_fdf *map, t_plot *pix, t_trig *t)
+void	fdf_draw_line(t_fdf *e, t_plot *pix, t_trig *t)
 {
 	t_calc	*store;
 	int		i;
@@ -50,8 +50,8 @@ void	fdf_draw_line(t_fdf *map, t_plot *pix, t_trig *t)
 	i = 0;
 	while (i < store->dx)
 	{
-		pix->color = fdf_expose_color(map, pix, t, store);
-		mlx_pixel_put(map->mlx, map->win, store->x, store->y, pix->color);
+		pix->color = fdf_expose_color(e, pix, t, store);
+		mlx_pixel_put(e->mlx, e->win, store->x, store->y, pix->color);
 		while (store->dif >= 0)
 		{
 			store->dif = store->dif - 2 * store->dx;

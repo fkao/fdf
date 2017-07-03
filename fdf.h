@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 14:41:38 by fkao              #+#    #+#             */
-/*   Updated: 2017/06/29 19:10:05 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/03 15:30:24 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@ typedef struct	s_fdf
 {
 	int			fd;
 	char		*file;
-	float		size;
+	int			size;
+	int			isize;
 	int			wide;
 	int			high;
 	float		scale;
+	float		iscale;
 	int			**key;
 	int			max;
 	int			min;
@@ -36,6 +38,10 @@ typedef struct	s_fdf
 	int			g;
 	int			b;
 	float		tilt;
+	int			xshift;
+	int			yshift;
+	int			xset;
+	int			yset;
 }				t_fdf;
 
 typedef struct	s_plot
@@ -90,19 +96,16 @@ typedef struct	s_rgb
 	int			d1;
 }				t_rgb;
 
-void			fils_de_fer(t_fdf *map);
-t_fdf			*fdf_height_width(t_fdf *map, char *file);
-t_fdf			*fdf_grab_key(t_fdf *map, char *file);
-void			fdf_open_window(t_fdf *map);
-void			fdf_draw_line(t_fdf *map, t_plot *pix, t_trig *t);
-int				fdf_size_init(int high, int widecd
-);
+void			fils_de_fer(t_fdf *e);
+t_fdf			*fdf_height_width(t_fdf *e, char *file);
+t_fdf			*fdf_grab_key(t_fdf *e, char *file);
+void			fdf_open_window(t_fdf *e);
+void			fdf_draw_line(t_fdf *e, t_plot *pix, t_trig *t);
 int				fdf_width_len(char *str);
-int				fdf_put_error(t_fdf *map);
+int				fdf_put_error(t_fdf *e);
 int				fdf_check_rgb(char *str);
-int				fdf_key_funct(int keycode, t_fdf *map);
-int				fdf_key_bonus(int keycode, t_fdf *map);
-int				fdf_key_tint(int keycode, t_fdf *map);
-int				fdf_expose_color(t_fdf *map, t_plot *pix, t_trig *t,
+int				fdf_key_funct(int keycode, t_fdf *e);
+int				fdf_mouse_funct(int keycode, int x, int y, t_fdf *e);
+int				fdf_expose_color(t_fdf *e, t_plot *pix, t_trig *t,
 					t_calc *store);
 #endif

@@ -6,114 +6,124 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 15:35:40 by fkao              #+#    #+#             */
-/*   Updated: 2017/06/29 17:42:08 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/03 16:07:39 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		fdf_key_funct(int keycode, t_fdf *map)
+int		fdf_put_error(t_fdf *e)
 {
-	if (keycode == 53)
+	if (e == 0)
 	{
-		mlx_destroy_window(map->mlx, map->win);
-		exit(0);
+		ft_putstr("usage: ./fdf [file][maxrgb(rrrgggbbb)] [minrgb(rrrgggbbb)]");
+		ft_putendl(" [zscale]");
 	}
-	fdf_key_bonus(keycode, map);
-	return (0);
+	else if (e->fd == -1)
+		ft_putendl("error: file cannot be found");
+	else if (e->wide == 0)
+		ft_putendl("e error: empty e");
+	else if (e->wide == -1)
+		ft_putendl("e error: invalid e");
+	else
+		return (0);
+	return (1);
 }
 
-t_trig	*fdf_plot_line(t_fdf *map, t_plot *pix, t_trig *t)
+t_trig	*fdf_plot_line(t_fdf *e, t_plot *pix, t_trig *t)
 {
 	int	n;
 
-	t->z2 = map->key[t->i][t->j];
-	n = t->z2 * map->scale;
+	t->z2 = e->key[t->i][t->j];
+	n = t->z2 * e->scale;
 	if (pix->down)
 	{
-		pix->x2 = t->xo + (t->i * map->size) * cos(0.524);
-		pix->y2 = t->yo + (t->i * map->size) * sin(0.524 + map->tilt) - n;
+		pix->x2 = t->xo + (t->i * e->size) * cos(0.524);
+		pix->y2 = t->yo + (t->i * e->size) * sin(0.524 + e->tilt) - n;
 		t->i++;
 	}
 	else
 	{
-		pix->x2 = t->xo + (t->j * map->size) * cos(0.524);
-		pix->y2 = t->yo - (t->j * map->size) * sin(0.524 + map->tilt) - n;
+		pix->x2 = t->xo + (t->j * e->size) * cos(0.524);
+		pix->y2 = t->yo - (t->j * e->size) * sin(0.524 + e->tilt) - n;
 		t->j++;
 	}
-	fdf_draw_line(map, pix, t);
+	fdf_draw_line(e, pix, t);
 	pix->y1 = pix->y2;
 	pix->x1 = pix->x2;
 	t->z1 = t->z2;
 	return (t);
 }
 
-t_trig	*fdf_set_plot(t_fdf *map, t_plot *pix, t_trig *t)
+t_trig	*fdf_set_plot(t_fdf *e, t_plot *pix, t_trig *t)
 {
 	int	n;
 
-	t->z1 = map->key[t->i][t->j];
+	t->z1 = e->key[t->i][t->j];
 	n = (pix->down) ? t->j : t->i;
-	t->xo = (n * map->size) * cos(0.524) + map->size;
+	t->xo = (n * e->size) * cos(0.524) + e->size + e->xshift + e->xset;
 	pix->x1 = t->xo;
 	if (pix->down)
-		t->yo = pix->of - (n * map->size) * sin(0.524 + map->tilt) + map->size;
+		t->yo = pix->of - (n * e->size) * sin(0.524 + e->tilt) + e->size
+			+ e->yset;
 	else
-		t->yo = pix->of + (n * map->size) * sin(0.524 + map->tilt) + map->size;
-	pix->y1 = t->yo - (t->z1 * map->scale);
+		t->yo = pix->of + (n * e->size) * sin(0.524 + e->tilt) + e->size
+			+ e->yset;
+	pix->y1 = t->yo - (t->z1 * e->scale);
 	return (t);
 }
 
-void	fils_de_fer(t_fdf *map)
+void	fils_de_fer(t_fdf *e)
 {
 	t_plot	*pix;
 	t_trig	*t;
 
+	(e->scale <= 0) ? exit(0) : 0;
 	t = (t_trig*)ft_memalloc(sizeof(*t));
 	pix = (t_plot*)ft_memalloc(sizeof(*pix));
-	pix->of = (map->wide * map->size) * sin(0.524) + map->max * map->scale;
-	while (t->i < map->high + 1)
+	pix->of = (e->wide * e->size) * sin(0.524) + e->max * e->scale + e->yshift;
+	while (t->i < e->high + 1)
 	{
 		t->j = 0;
-		t = fdf_set_plot(map, pix, t);
-		while (t->j < (map->wide + 1))
-			t = fdf_plot_line(map, pix, t);
+		t = fdf_set_plot(e, pix, t);
+		while (t->j < (e->wide + 1))
+			t = fdf_plot_line(e, pix, t);
 		t->i++;
 	}
 	pix->down = 1;
 	t->j = 0;
-	while (t->j < map->wide + 1)
+	while (t->j < e->wide + 1)
 	{
 		t->i = 0;
-		t = fdf_set_plot(map, pix, t);
-		while (t->i < (map->high + 1))
-			t = fdf_plot_line(map, pix, t);
+		t = fdf_set_plot(e, pix, t);
+		while (t->i < (e->high + 1))
+			t = fdf_plot_line(e, pix, t);
 		t->j++;
 	}
 }
 
 int		main(int ac, char **av)
 {
-	t_fdf	*map;
+	t_fdf	*e;
 
-	map = (t_fdf*)ft_memalloc(sizeof(*map));
-	map->scale = 3;
-	map->rgbmax = "255255255";
-	map->rgbmin = "255255255";
+	e = (t_fdf*)ft_memalloc(sizeof(*e));
+	e->scale = 3;
+	e->rgbmax = "255255255";
+	e->rgbmin = "255255255";
 	if (ac == 5 && (ft_isdigit(av[4][0]) && ft_atoi(av[4]) > 0 &&
 		ft_atoi(av[4]) < 20))
-		map->scale = ft_atoi(av[--ac]);
+		e->scale = ft_atoi(av[--ac]);
 	if (ac == 4 && ft_strlen(av[3]) == 9 && fdf_check_rgb(av[3]))
-		map->rgbmin = av[--ac];
+		e->rgbmin = av[--ac];
 	if (ac == 3 && ft_strlen(av[2]) == 9 && fdf_check_rgb(av[2]))
-		map->rgbmax = av[--ac];
+		e->rgbmax = av[--ac];
 	if (ac == 2)
 	{
-		map = fdf_height_width(map, av[1]);
-		if (!fdf_put_error(map))
+		e = fdf_height_width(e, av[1]);
+		if (!fdf_put_error(e))
 		{
-			map = fdf_grab_key(map, av[1]);
-			fdf_open_window(map);
+			e = fdf_grab_key(e, av[1]);
+			fdf_open_window(e);
 		}
 	}
 	else
