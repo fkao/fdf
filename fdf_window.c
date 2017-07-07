@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 17:06:32 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/03 16:08:18 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/07 15:20:06 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,23 @@
 int		fdf_width_len(char *str)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	while (*str)
+	j = 0;
+	while (str[j])
 	{
-		if (ft_isdigit(*str))
+		if (ft_isdigit(str[j]))
 		{
 			i++;
-			while (*str != ' ' && *str)
-				str++;
+			while (str[j] != ' ' && str[j])
+				j++;
 		}
 		else
-			str++;
+			j++;
 	}
+	if (i == 0 && j != 0)
+		return (-1);
 	return (i);
 }
 
@@ -40,20 +44,21 @@ t_fdf	*fdf_height_width(t_fdf *e, char *file)
 
 	e->fd = open(file, O_RDONLY);
 	if (e->fd != -1)
-	{
-		ret = get_next_line(e->fd, &line);
-		e->wide = fdf_width_len(line);
-		while (ret == 1)
+		if ((ret = get_next_line(e->fd, &line)) == 1)
 		{
-			ret = get_next_line(e->fd, &line);
-			if (fdf_width_len(line) != e->wide)
+			e->wide = fdf_width_len(line);
+			while (ret == 1)
 			{
-				e->wide = -1;
-				break ;
+				ret = get_next_line(e->fd, &line);
+				if (fdf_width_len(line) != e->wide)
+				{
+					free(line);
+					e->wide = -1;
+					break ;
+				}
+				e->high++;
 			}
-			e->high++;
 		}
-	}
 	close(e->fd);
 	return (e);
 }
@@ -97,6 +102,7 @@ t_fdf	*fdf_grab_key(t_fdf *e, char *file)
 	while (get_next_line(e->fd, &line) == 1)
 	{
 		row = fdf_min_max(e, line);
+		free(line);
 		e->key[i++] = row;
 	}
 	close(e->fd);

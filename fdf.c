@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 15:35:40 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/03 16:30:50 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/07 15:01:36 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,79 +27,79 @@ int		fdf_put_error(t_fdf *e)
 		ft_putendl("map error: empty map");
 	else
 		return (0);
+	free(e);
 	return (1);
 }
 
-t_trig	*fdf_plot_line(t_fdf *e, t_plot *pix, t_trig *t)
+t_trig	*fdf_plot_line(t_fdf *e, t_trig *t)
 {
 	int	n;
 
 	t->z2 = e->key[t->i][t->j];
 	n = t->z2 * e->scale;
-	if (pix->down)
+	if (t->down)
 	{
-		pix->x2 = t->xo + (t->i * e->size) * cos(0.524);
-		pix->y2 = t->yo + (t->i * e->size) * sin(0.524 + e->tilt) - n;
+		t->x2 = t->xo + (t->i * e->size) * cos(0.524);
+		t->y2 = t->yo + (t->i * e->size) * sin(0.524 + e->tilt) - n;
 		t->i++;
 	}
 	else
 	{
-		pix->x2 = t->xo + (t->j * e->size) * cos(0.524);
-		pix->y2 = t->yo - (t->j * e->size) * sin(0.524 + e->tilt) - n;
+		t->x2 = t->xo + (t->j * e->size) * cos(0.524);
+		t->y2 = t->yo - (t->j * e->size) * sin(0.524 + e->tilt) - n;
 		t->j++;
 	}
-	fdf_draw_line(e, pix, t);
-	pix->y1 = pix->y2;
-	pix->x1 = pix->x2;
+	fdf_draw_line(e, t);
+	t->y1 = t->y2;
+	t->x1 = t->x2;
 	t->z1 = t->z2;
 	return (t);
 }
 
-t_trig	*fdf_set_plot(t_fdf *e, t_plot *pix, t_trig *t)
+t_trig	*fdf_set_plot(t_fdf *e, t_trig *t)
 {
 	int	n;
 
+	t->of = (e->wide * e->size) * sin(0.524) + e->max * e->scale + e->yshift;
 	t->z1 = e->key[t->i][t->j];
-	n = (pix->down) ? t->j : t->i;
+	n = (t->down) ? t->j : t->i;
 	t->xo = (n * e->size) * cos(0.524) + e->size + e->xshift + e->xset;
-	pix->x1 = t->xo;
-	if (pix->down)
-		t->yo = pix->of - (n * e->size) * sin(0.524 + e->tilt) + e->size
+	t->x1 = t->xo;
+	if (t->down)
+		t->yo = t->of - (n * e->size) * sin(0.524 + e->tilt) + e->size
 			+ e->yset;
 	else
-		t->yo = pix->of + (n * e->size) * sin(0.524 + e->tilt) + e->size
+		t->yo = t->of + (n * e->size) * sin(0.524 + e->tilt) + e->size
 			+ e->yset;
-	pix->y1 = t->yo - (t->z1 * e->scale);
+	t->y1 = t->yo - (t->z1 * e->scale);
 	return (t);
 }
 
 void	fils_de_fer(t_fdf *e)
 {
-	t_plot	*pix;
 	t_trig	*t;
 
 	(e->scale <= 0) ? exit(0) : 0;
 	t = (t_trig*)ft_memalloc(sizeof(*t));
-	pix = (t_plot*)ft_memalloc(sizeof(*pix));
-	pix->of = (e->wide * e->size) * sin(0.524) + e->max * e->scale + e->yshift;
 	while (t->i < e->high + 1)
 	{
 		t->j = 0;
-		t = fdf_set_plot(e, pix, t);
+		t = fdf_set_plot(e, t);
 		while (t->j < (e->wide + 1))
-			t = fdf_plot_line(e, pix, t);
+			t = fdf_plot_line(e, t);
 		t->i++;
 	}
-	pix->down = 1;
-	t->j = 0;
-	while (t->j < e->wide + 1)
+	t->down = 1;
+	t->j--;
+	while (t->j >= 0)
 	{
 		t->i = 0;
-		t = fdf_set_plot(e, pix, t);
+		t = fdf_set_plot(e, t);
 		while (t->i < (e->high + 1))
-			t = fdf_plot_line(e, pix, t);
-		t->j++;
+			t = fdf_plot_line(e, t);
+		t->j--;
 	}
+	free(t);
 }
 
 int		main(int ac, char **av)
@@ -108,8 +108,8 @@ int		main(int ac, char **av)
 
 	e = (t_fdf*)ft_memalloc(sizeof(*e));
 	e->scale = 3;
-	e->rgbmax = "200200000";
-	e->rgbmin = "200000255";
+	e->rgbmax = "250250000";
+	e->rgbmin = "250000200";
 	if (ac == 5 && (ft_isdigit(av[4][0]) && ft_atoi(av[4]) > 0 &&
 		ft_atoi(av[4]) < 20))
 		e->scale = ft_atoi(av[--ac]);
@@ -127,6 +127,6 @@ int		main(int ac, char **av)
 		}
 	}
 	else
-		fdf_put_error(0);
+		fdf_put_error(e = 0);
 	return (0);
 }

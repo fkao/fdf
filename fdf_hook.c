@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/03 12:59:45 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/03 16:06:06 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/07 13:53:56 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	fdf_key_funct(int code, t_fdf *e)
 {
 	if (code == 53)
 	{
+		free(e->key);
 		mlx_destroy_window(e->mlx, e->win);
 		exit(0);
 	}
