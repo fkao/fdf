@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 12:05:12 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/07 14:47:09 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/18 15:20:22 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,17 @@ int	fdf_rgb_get(t_fdf *e, int z)
 	c->gz = (ft_atoi(ft_strsub(e->rgbmax, 3, 3)) + e->g) % 256;
 	c->bz = (ft_atoi(ft_strsub(e->rgbmax, 6, 3)) + e->b) % 256;
 	c->d = e->max - e->min;
-	c->r1 = (c->r - c->rz) / c->d;
-	c->g1 = (c->g - c->gz) / c->d;
-	c->b1 = (c->b - c->bz) / c->d;
-	c->d1 = e->max - z;
-	rgb = ((c->rz + c->r1 * c->d1) << 16) + ((c->gz + c->g1 * c->d1) << 8) +
-		(c->bz + c->b1 * c->d1);
+	if (c->d == 0)
+		rgb = (c->r << 16) + (c->g << 8) + (c->b);
+	else
+	{
+		c->r1 = (c->r - c->rz) / c->d;
+		c->g1 = (c->g - c->gz) / c->d;
+		c->b1 = (c->b - c->bz) / c->d;
+		c->d1 = e->max - z;
+		rgb = ((c->rz + c->r1 * c->d1) << 16) + ((c->gz + c->g1 * c->d1) << 8) +
+			(c->bz + c->b1 * c->d1);
+	}
 	free(c);
 	return (rgb);
 }

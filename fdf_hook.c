@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/03 12:59:45 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/07 13:53:56 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/18 15:34:57 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,6 @@ int	fdf_mouse_funct(int code, int x, int y, t_fdf *e)
 	return (0);
 }
 
-int	fdf_key_tint(int code, t_fdf *e)
-{
-	if (code == 15)
-		e->r += 4;
-	if (code == 5)
-		e->g += 4;
-	if (code == 11)
-		e->b += 4;
-	mlx_clear_window(e->mlx, e->win);
-	fils_de_fer(e);
-	return (0);
-}
-
 int	fdf_key_bonus(int code, t_fdf *e)
 {
 	if (code >= 123 && code <= 126)
@@ -72,11 +59,11 @@ int	fdf_key_bonus(int code, t_fdf *e)
 	if (code == 24 || code == 27)
 		fdf_key_zoom((code == 24) ? 1 : 2, e);
 	if (code == 15)
-		e->r += 5;
+		e->r += 12;
 	if (code == 5)
-		e->g += 5;
+		e->g += 12;
 	if (code == 11)
-		e->b += 5;
+		e->b += 12;
 	if (code == 116)
 		e->tilt -= 0.01746;
 	if (code == 121)
