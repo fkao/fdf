@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 17:06:32 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/07 15:20:06 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/18 16:19:33 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,7 @@ void	fdf_open_window(t_fdf *e)
 		mlx_pixel_put(e->mlx, e->win, e->size, e->size, 0x00FFFFFF);
 	else
 		fils_de_fer(e);
-	mlx_key_hook(e->win, fdf_key_funct, e);
-	mlx_mouse_hook(e->win, fdf_mouse_funct, e);
+	fdf_key_cmd(e);
 	mlx_loop(e->mlx);
 	return ;
 }

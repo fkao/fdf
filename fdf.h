@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 14:41:38 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/07 15:16:29 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/18 15:55:10 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,5 @@ int				fdf_key_funct(int keycode, t_fdf *e);
 int				fdf_mouse_funct(int keycode, int x, int y, t_fdf *e);
 int				fdf_expose_color(t_fdf *e, t_trig *t,
 					t_bres *store);
+int				fdf_key_cmd(t_fdf *e);
 #endif

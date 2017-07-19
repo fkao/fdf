@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/03 12:59:45 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/18 15:34:57 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/18 16:28:10 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,20 @@ int	fdf_key_funct(int code, t_fdf *e)
 		exit(0);
 	}
 	fdf_key_bonus(code, e);
+	return (0);
+}
+
+int	fdf_key_cmd(t_fdf *e)
+{
+	ft_putendl("action: key command\n\t(mouse command)");
+	ft_putendl("zoom in: =\t\tzoom out: -\n\t (left click)\t\t  (right click)");
+	ft_putendl("tilt up: page up\ttilt down: page down");
+	ft_putendl("tint red: r\t\ttint green: g\t\ttint blue: b");
+	ft_putendl("move up: up\t\tmove down: down");
+	ft_putendl("\t (scroll up)\t\t   (scroll down)");
+	ft_putendl("move left: left\t\tmove right: right");
+	ft_putendl("\t   (scroll left)\t    (scroll right)\nexit: esc");
+	mlx_key_hook(e->win, fdf_key_funct, e);
+	mlx_mouse_hook(e->win, fdf_mouse_funct, e);
 	return (0);
 }
