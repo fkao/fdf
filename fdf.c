@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 15:35:40 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/18 15:50:57 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/20 16:35:21 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,16 @@ t_trig	*fdf_set_plot(t_fdf *e, t_trig *t)
 {
 	int	n;
 
-	t->of = (e->wide * e->size) * sin(0.524) + e->max * e->scale + e->yshift;
+	t->of = (e->wide * e->size) * sin(0.524) + e->max * e->scale + e->yshift
+		- e->yset;
 	t->z1 = e->key[t->i][t->j];
 	n = (t->down) ? t->j : t->i;
-	t->xo = (n * e->size) * cos(0.524) + e->size + e->xshift + e->xset;
+	t->xo = (n * e->size) * cos(0.524) + e->size + e->xshift - e->xset;
 	t->x1 = t->xo;
 	if (t->down)
-		t->yo = t->of - (n * e->size) * sin(0.524 + e->tilt) + e->size
-			+ e->yset;
+		t->yo = t->of - (n * e->size) * sin(0.524 + e->tilt) + e->size;
 	else
-		t->yo = t->of + (n * e->size) * sin(0.524 + e->tilt) + e->size
-			+ e->yset;
+		t->yo = t->of + (n * e->size) * sin(0.524 + e->tilt) + e->size;
 	t->y1 = t->yo - (t->z1 * e->scale);
 	return (t);
 }
