@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 17:06:32 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/20 16:29:13 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/25 13:48:58 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		fdf_width_len(char *str)
 	return (i);
 }
 
-t_fdf	*fdf_height_width(t_fdf *e, char *file)
+void	fdf_height_width(t_fdf *e, char *file)
 {
 	int		ret;
 	char	*line;
@@ -60,7 +60,6 @@ t_fdf	*fdf_height_width(t_fdf *e, char *file)
 			}
 		}
 	close(e->fd);
-	return (e);
 }
 
 int		*fdf_min_max(t_fdf *e, char *line)
@@ -89,7 +88,7 @@ int		*fdf_min_max(t_fdf *e, char *line)
 	return (row);
 }
 
-t_fdf	*fdf_grab_key(t_fdf *e, char *file)
+void	fdf_grab_key(t_fdf *e, char *file)
 {
 	int		i;
 	int		*row;
@@ -106,7 +105,6 @@ t_fdf	*fdf_grab_key(t_fdf *e, char *file)
 		e->key[i++] = row;
 	}
 	close(e->fd);
-	return (e);
 }
 
 void	fdf_open_window(t_fdf *e)

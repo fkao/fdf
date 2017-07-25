@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 14:41:38 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/20 16:35:39 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/25 16:13:21 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,13 @@ typedef struct	s_fdf
 	int			isize;
 	double		scale;
 	double		iscale;
+	double		rx;
+	double		ry;
+	double		rz;
+	int			x;
+	int			y;
 	char		*rgbmax;
 	char		*rgbmin;
-	int			r;
-	int			g;
-	int			b;
-	double		tilt;
 	int			xshift;
 	int			yshift;
 	int			xset;
@@ -93,14 +94,16 @@ typedef struct	s_rgb
 }				t_rgb;
 
 void			fils_de_fer(t_fdf *e);
-t_fdf			*fdf_height_width(t_fdf *e, char *file);
-t_fdf			*fdf_grab_key(t_fdf *e, char *file);
+void			fdf_height_width(t_fdf *e, char *file);
+void			fdf_grab_key(t_fdf *e, char *file);
 void			fdf_open_window(t_fdf *e);
 void			fdf_draw_line(t_fdf *e, t_trig *t);
+int				fdf_put_error(t_fdf *e);
 int				fdf_key_cmd(t_fdf *e);
 int				fdf_mouse_funct(int code, int x, int y, t_fdf *e);
 int				fdf_motion_hook(int x, int y, t_fdf *e);
 int				fdf_mouse_release(int code, int x, int y, t_fdf *e);
+int				fdf_key_zoom(int code, t_fdf *e);
 int				fdf_check_rgb(char *str);
 int				fdf_expose_color(t_fdf *e, t_trig *t,
 					t_bres *store);

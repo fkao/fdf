@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 14:22:37 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/07 14:45:04 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/25 13:50:45 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_bres	*fdf_populate_store(t_trig *t, t_bres *store)
 {
 	store->x = t->x1;
 	store->y = t->y1;
-	store->dx = t->x2 - t->x1;
+	store->dx = ft_toabsl(t->x2 - t->x1);
 	store->dy = ft_toabsl(t->y2 - t->y1);
 	store->s1 = sign(t->x2 - t->x1);
 	store->s2 = sign(t->y2 - t->y1);
