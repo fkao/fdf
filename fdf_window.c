@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 17:06:32 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/25 13:48:58 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/27 10:36:34 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ void	fdf_open_window(t_fdf *e)
 	winz = e->scale * (e->max - e->min);
 	e->win = mlx_new_window(e->mlx, winx, winy + winz, e->file);
 	if (!e->wide && !e->high)
-		mlx_pixel_put(e->mlx, e->win, e->size, e->size, 0x00FFFFFF);
+		mlx_pixel_put(e->mlx, e->win, e->size, e->size,
+			fdf_rgb_get(e, e->key[0][0]));
 	else
 		fils_de_fer(e);
 	fdf_key_cmd(e);

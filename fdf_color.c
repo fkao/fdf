@@ -6,11 +6,12 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 12:05:12 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/25 16:13:39 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/27 10:30:34 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <stdio.h>
 
 int	fdf_check_rgb(char *str)
 {
@@ -53,20 +54,19 @@ int	fdf_rgb_get(t_fdf *e, int z)
 
 int	fdf_expose_color(t_fdf *e, t_trig *t, t_bres *store)
 {
-	int	y;
 	int	z;
+	int	f;
 
-	if (e->rx || e->ry || e->rz)
+	z = t->z1;
+	if ((t->x2 - t->x1) != 0 && (t->y2 - t->y1) == 0)
 	{
-		if (t->z2 > t->z1)
-			return (fdf_rgb_get(e, t->z2));
-		else
-			return (fdf_rgb_get(e, t->z1));
+		f = (store->x - t->x1) * 10 / (t->x2 - t->x1) * (t->z2 - t->z1);
+		z = t->z1 + f / 10;
 	}
-	if (t->down)
-		y = t->yo + (store->x - t->xo) * (sin(0.524) / cos(0.524));
-	else
-		y = t->yo - (store->x - t->xo) * (sin(0.524) / cos(0.524));
-	z = (y - store->y) / e->scale;
+	else if ((t->y2 - t->y1) != 0)
+	{
+		f = (store->y - t->y1) * 10 / (t->y2 - t->y1) * (t->z2 - t->z1);
+		z = t->z1 + f / 10;
+	}
 	return (fdf_rgb_get(e, z));
 }

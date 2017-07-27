@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 14:41:38 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/25 16:13:21 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/27 10:36:17 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,6 @@ int				fdf_motion_hook(int x, int y, t_fdf *e);
 int				fdf_mouse_release(int code, int x, int y, t_fdf *e);
 int				fdf_key_zoom(int code, t_fdf *e);
 int				fdf_check_rgb(char *str);
-int				fdf_expose_color(t_fdf *e, t_trig *t,
-					t_bres *store);
+int				fdf_expose_color(t_fdf *e, t_trig *t, t_bres *store);
+int				fdf_rgb_get(t_fdf *e, int z);
 #endif
