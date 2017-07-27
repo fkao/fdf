@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 17:06:32 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/27 10:36:34 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/27 16:09:05 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,10 @@ void	fdf_grab_key(t_fdf *e, char *file)
 		free(line);
 		e->key[i++] = row;
 	}
+	e->rx = 0.9553;
+	e->rz = 5.4978;
+	e->rgbmax = "250250000";
+	e->rgbmin = "250000200";
 	close(e->fd);
 }
 
@@ -122,8 +126,8 @@ void	fdf_open_window(t_fdf *e)
 		e->size /= 2;
 		screen /= 2;
 	}
-	winx = (e->wide + e->high) * e->size * cos(0.524) + e->size * 2;
-	winy = (e->wide + e->high) * e->size * sin(0.524) + e->size * 2;
+	winx = (e->wide + e->high) * e->size * cos(0.524);
+	winy = (e->wide + e->high) * e->size * sin(0.524);
 	winz = e->scale * (e->max - e->min);
 	e->win = mlx_new_window(e->mlx, winx, winy + winz, e->file);
 	if (!e->wide && !e->high)

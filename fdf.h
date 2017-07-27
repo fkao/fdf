@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/08 14:41:38 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/27 10:36:17 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/27 15:14:30 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef struct	s_trig
 	int			j;
 	int			xo;
 	int			yo;
-	int			of;
 	int			down;
 }				t_trig;
 

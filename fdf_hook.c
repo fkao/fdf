@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/03 12:59:45 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/25 16:17:28 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/27 16:34:29 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ int	fdf_key_zoom(int code, t_fdf *e)
 
 int	fdf_key_bonus(int code, t_fdf *e)
 {
-	if (code == 87)
+	if (code == 87 || code == 82)
 	{
-		e->rx = 0;
+		e->rx = (code == 87) ? 0 : 0.9553;
 		e->ry = 0;
-		e->rz = 0;
+		e->rz = (code == 87) ? 0 : 5.4978;
 		e->xset = 0;
 		e->yset = 0;
 		e->xshift = 0;
@@ -75,7 +75,7 @@ int	fdf_key_cmd(t_fdf *e)
 	ft_putendl("rotate clockwise: 9\t\trotate counter clockwise: 7");
 	ft_putendl("move up: (drag up)\t\tmove down: (drag down)");
 	ft_putendl("move left: (drag left)\t\tmove right: (drag right)");
-	ft_putendl("reset: 5\nexit: esc");
+	ft_putendl("top view: 5\t\t\tisometric: 0\nexit: esc");
 	mlx_hook(e->win, 2, 0, fdf_key_funct, e);
 	mlx_hook(e->win, 4, 0, fdf_mouse_funct, e);
 	mlx_hook(e->win, 6, 0, fdf_motion_hook, e);
