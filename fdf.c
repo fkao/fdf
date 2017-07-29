@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 15:35:40 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/27 16:29:01 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/28 17:40:05 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,14 @@ int		main(int ac, char **av)
 
 	e = (t_fdf*)ft_memalloc(sizeof(*e));
 	e->scale = 3;
+	e->rgbmax = "250250000";
+	e->rgbmin = "250000200";
 	if (ac == 5 && ft_strlen(av[4]) == 9 && fdf_check_rgb(av[4]))
 		e->rgbmin = av[--ac];
 	if (ac == 4 && ft_strlen(av[3]) == 9 && fdf_check_rgb(av[3]))
 		e->rgbmax = av[--ac];
 	if (ac == 3 && (ft_isdigit(av[2][0]) && ft_atoi(av[2]) > 0 &&
-		ft_atoi(av[4]) < 20))
+		ft_atoi(av[2]) < 20))
 		e->scale = ft_atoi(av[--ac]);
 	if (ac == 2)
 	{

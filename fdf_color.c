@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 12:05:12 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/27 10:30:34 by fkao             ###   ########.fr       */
+/*   Updated: 2017/07/28 17:40:01 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int	fdf_rgb_get(t_fdf *e, int z)
 	int		rgb;
 
 	c = (t_rgb*)ft_memalloc(sizeof(*c));
-	c->r = ft_atoi(ft_strsub(e->rgbmin, 0, 3));
-	c->g = ft_atoi(ft_strsub(e->rgbmin, 3, 3));
-	c->b = ft_atoi(ft_strsub(e->rgbmin, 6, 3));
-	c->rz = ft_atoi(ft_strsub(e->rgbmax, 0, 3));
-	c->gz = ft_atoi(ft_strsub(e->rgbmax, 3, 3));
-	c->bz = ft_atoi(ft_strsub(e->rgbmax, 6, 3));
+	c->r = ft_atoi(ft_strsub(e->rgbmin, 0, 3)) % 256;
+	c->g = ft_atoi(ft_strsub(e->rgbmin, 3, 3)) % 256;
+	c->b = ft_atoi(ft_strsub(e->rgbmin, 6, 3)) % 256;
+	c->rz = ft_atoi(ft_strsub(e->rgbmax, 0, 3)) % 256;
+	c->gz = ft_atoi(ft_strsub(e->rgbmax, 3, 3)) % 256;
+	c->bz = ft_atoi(ft_strsub(e->rgbmax, 6, 3)) % 256;
 	c->d = e->max - e->min;
 	if (c->d == 0)
 		rgb = (c->r << 16) + (c->g << 8) + (c->b);
