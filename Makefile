@@ -40,12 +40,10 @@ $(LIB):
 	@$(MC) ./mlx
 
 $(ODIR)%.o: %.c
-	@$(CC) -c $(FLAG) $(INCL) -c $< -o $@
-
-ofile:
 	@mkdir -p $(ODIR)
+	@$(CC) -c $< -o $@ $(FLAG) $(INCL)
 
-$(NAME): ofile $(OBJ)
+$(NAME): $(OBJ)
 	@$(CC) -o $(NAME) $(FRAME) $(OBJ) $(LIB)
 
 clean:
