@@ -6,7 +6,7 @@
 /*   By: fkao <fkao@student.42.us.org>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/20 15:46:36 by fkao              #+#    #+#             */
-/*   Updated: 2017/07/25 15:30:29 by fkao             ###   ########.fr       */
+/*   Updated: 2017/08/24 14:30:33 by fkao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	fdf_mouse_funct(int code, int x, int y, t_fdf *e)
 		e->py = y - e->yshift;
 	}
 	if (code == 4)
-		fdf_key_zoom(69, e);
+		fdf_key_zoom(24, e);
 	if (code == 5)
-		fdf_key_zoom(78, e);
+		fdf_key_zoom(27, e);
 	mlx_clear_window(e->mlx, e->win);
 	fils_de_fer(e);
 	return (0);
